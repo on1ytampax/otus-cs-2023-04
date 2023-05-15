@@ -1,0 +1,14 @@
+0 * * r 0
+0 _ d l find_number
+find_number 0 s r mv0
+find_number 1 s r mv1
+find_number _ * r clear
+find_number * * l find_number
+mv0 * * r mv0
+mv0 _ 0 l find_delimeter
+mv1 * * r mv1
+mv1 _ 1 l find_delimeter
+clear * _ r clear
+clear d _ r halt
+find_delimeter * * l find_delimeter
+find_delimeter d * l find_number
