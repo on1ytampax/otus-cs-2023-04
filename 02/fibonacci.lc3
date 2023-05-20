@@ -1,0 +1,50 @@
+.ORIG x3000
+    LD R2, ASCII
+    LD R1, N
+    ADD R1, R1, #-1
+    BRn PRINT
+    AND R3, R3, #0 
+    AND R4, R4, #0
+    ADD R4, R4, #1
+
+LOOP
+    ADD R5, R3, R4
+    ADD R1, R1, #-1
+    BRnz PRINT    
+    ADD R3, R4, #0
+    ADD R4, R5, #0    
+    BRnp LOOP
+
+PRINT
+    LEA R0, OUTARRAY ; загружаем в R0 указатель на наш массив
+    ADD R0, R0, #4 ; сдвигаем указатель на последнию цифру числа (6-2)
+    AND R1, R1, #0 ; результат от деления
+    AND R4, R4, #0 ;
+    
+PRINTLOOP
+    ADD R5, R5, #-10 ; вычитаем из R1 10
+    BRn NEGATIVE ; если результат отрицательный переходим к блоку NEGATIVE
+    ADD R1, R1, #1 ; инкрементируем результат от деления
+    BR PRINTLOOP ; продолжаем цикл
+
+NEGATIVE
+    ADD R4, R5, #10 ; записываем в R4 остаток от деления
+    ADD R4, R4, R2 ; добавляем к остатку ASCII сдвиг
+    STR R4, R0, #0 ; сохраняем полученное число в массиве
+    ADD R5, R1, #0 ; копируем результат от деления в R5
+    BRz END ; если в R1 0, деление закончено
+    ADD R0, R0, #-1 ; сдвигаем указатель массива   
+    AND R1, R1, #0 ; чистим R1
+    BR PRINTLOOP
+
+END
+    PUTS ; выводим массив с указателя в R0
+
+DONE
+    HALT
+
+N .FILL #23
+ASCII .FILL #48
+OUTARRAY .BLKW #6 ; 5 символов на число + \0 (#0)
+
+.END

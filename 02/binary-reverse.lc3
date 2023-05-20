@@ -1,0 +1,31 @@
+.ORIG x3000
+    LD R1, NUM
+    LD R2, ASCII
+    AND R3, R3, #0
+    ADD R3, R3, #-2
+    AND R4, R4, #0
+    ADD R4, R4, #2
+    AND R5, R5, #0
+
+LOOP
+    ADD R1, R1, R3
+    BRn NEGATIVE
+    ADD R5, R5, #1
+    BR LOOP
+
+NEGATIVE
+    ADD R0, R1, R4
+    ADD R0, R0, R2
+    OUT
+    ADD R1, R5, #0
+    BRz END
+    AND R5, R5, #0
+    BR LOOP
+
+END
+    HALT    
+    
+NUM .FILL b1111000001
+ASCII .FILL #48
+
+.END
